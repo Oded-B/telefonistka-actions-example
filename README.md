@@ -1,1 +1,1 @@
-# telefonistka-actions-example
+# telefonistka-example

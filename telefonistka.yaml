@@ -1,0 +1,38 @@
+promotionPaths:
+  - sourcePath: "workspace/"
+    promotionPrs:
+      - targetPaths:
+        - "clusters/dev/us-east4/c2/"
+        - "clusters/lab/europe-west4/c1/"
+        - "clusters/staging/us-central1/c1/"
+        - "clusters/staging/us-central1/c2/"
+        - "clusters/staging/europe-west4/c1/"
+  - sourcePath: "clusters/staging/[^/]*/[^/]*/" # This will start a promotion to prod from any "staging" path
+    conditions:
+      prHasLabels:
+        - "quick_promotion" # This flow will run only if PR has "quick_promotion" label, see targetPaths below
+    promotionPrs:
+      - targetPaths:
+        - "clusters/prod/us-west1/c2/" # First PR for only a single cluster
+      - targetPaths:
+        - "clusters/prod/europe-west3/c2/" # 2nd PR will sync all 4 remaining clusters
+        - "clusters/prod/europe-west4/c2/"
+        - "clusters/prod/us-central1/c2/"
+        - "clusters/prod/us-east4/c2/"
+  - sourcePath: "clusters/staging/[^/]*/[^/]*/" # This flow will run on PR without "quick_promotion" label
+    promotionPrs:
+      - targetPaths:
+        - "clusters/prod/us-west1/c2/" # Each cluster will have its own promotion PR
+      - targetPaths:
+        - "clusters/prod/europe-west3/c2/"
+      - targetPaths:
+        - "clusters/prod/europe-west4/c2/"
+      - targetPaths:
+        - "clusters/prod/us-central1/c2/"
+      - targetPaths:
+        - "clusters/prod/us-east4/c2/"
+dryRunMode: false
+autoApprovePromotionPrs: false
+toggleCommitStatus:
+  override-terrafrom-pipeline: "github-action-terraform"
+
