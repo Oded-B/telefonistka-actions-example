@@ -21,6 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Runs Telefonistka
-      - uses:  Oded-B/telefonistka-action@main
+      - uses:  Oded-B/telefonistka-action@Set-TEMPLATES_PATH-to-support-GHA-workdir-override
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
